@@ -3,21 +3,22 @@
 , makeWrapper
 
 , mill
+, jre
 , ivy-gather
 , add-determinism-hook
 }:
 let
-  ivyCache = ivy-gather ../../lock.nix;
+  ivyCache = ivy-gather ../../../lock.nix;
 in
 stdenv.mkDerivation {
   name = "mill-ivy-fetcher";
 
   src = with lib.fileset;
     toSource {
-      root = ./../..;
+      root = ./../../..;
       fileset = unions [
-        ./../../build.mill
-        ./../../mif
+        ./../../../build.mill
+        ./../../../mif
       ];
     };
 
@@ -44,7 +45,7 @@ stdenv.mkDerivation {
     mv out/mif/assembly.dest/out.jar $out/share/java/mif.jar
 
     mkdir -p $out/bin
-    makeWrapper ${mill.jre}/bin/java $out/bin/mif \
+    makeWrapper ${jre}/bin/java $out/bin/mif \
       --add-flags "-jar $out/share/java/mif.jar"
   '';
 

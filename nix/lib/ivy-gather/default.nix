@@ -1,3 +1,34 @@
+/**
+  Each Ivy dependencies will contains one or more files: the publish JAR file
+  and the POM specification file. All those files are download separately to
+  make nix-prefetch-file happy. This function can help group files to Ivy
+  recognizable dependencies layout by reading the generated nix lock file.
+  Returning a derivation containing the ivy cache.
+
+
+  # Inputs
+
+  `nvfetcherNixSourcePath`
+  : 1\. Function argument
+
+  # Type
+
+  ```
+  ivy-gather :: path -> set
+  ```
+
+  # Examples
+  :::{.example}
+  ## `ivy-gather` usage example
+
+  ```nix
+  ivy-gather ./codegenFiles/project-ivys.nix
+  => <derivation>
+  ```
+
+  :::
+*/
+
 { lib
 , stdenvNoCC
 , lndir

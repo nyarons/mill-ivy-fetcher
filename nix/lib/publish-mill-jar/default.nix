@@ -1,3 +1,59 @@
+/**
+  publishMillJar is a helper function to run `.publishLocal` for a mill module.
+  Returning the ivy repo as result.
+
+  # Inputs
+
+  `args`
+  : 1\. Function argument
+
+  # Type
+
+  ```
+  publishMillJar :: set -> <derivation>
+  ```
+
+  # Examples
+  :::{.example}
+  ## `publishMillJar` usage example
+
+  ```nix
+  { lib, runCommand, mill, generateIvyCache, publishMillJar }:
+  let
+    src = with lib.fileset; toSource {
+      root = ./.;
+      fileset = unions [
+        ./build.mill
+        ./foo
+      ];
+    };
+
+    ivyCache = generateIvyCache {
+      name = "foo-deps";
+      inherit src;
+      hash = "sha256-7GQe62dGnSmTm3apResF3jEnwyvDMpRxjTZTJkby/1E=";
+      targets = [ "foo" ];
+    };
+  in
+  publishMillJar {
+    name = "foo";
+    inherit src;
+
+    publishTargets = [
+      "foo"
+    ];
+
+    buildInputs = [ ivyCache ];
+
+    passthru = {
+      inherit ivyCache;
+    };
+  }
+  ```
+
+  :::
+*/
+
 { stdenvNoCC
 , mill
 , writeText
