@@ -66,7 +66,7 @@
 , ivy-gather
 }:
 
-{ name, src, publishTargets, lockFile, ... }@args:
+{ name, src, publishTargets, lockFile, mill ? mill, ... }@args:
 
 let
   ivyCacheEnv = ivy-gather lockFile;
